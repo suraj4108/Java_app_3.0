@@ -73,12 +73,12 @@ pipeline{
                }
             }
         }
-        stage('JFrog Push : Jfrog'){
-         when { expression { params.action == 'create' } }
-            steps{
-                
-                curl -X PUT -u admin -T kubernetes-configmap-reload-0.0.1-SNAPSHOT.jar http://<EC2IP>:8082/artifactory/example-repo-local/
-                
+        stage('Deploy to Artifactory') {
+            steps {
+                script {
+                    def server = Artifactory.newServer url: 'ARTIFACTORY_URL', credentialsId: 'ARTIFACTORY_CREDENTIALS_ID'
+                    server.upload spec: '{"files": [{"pattern": "kubernetes-configmap-reload-0.0.1-SNAPSHOT.jar", "target": "example-repo-local/"}]}'
+                }
             }
         }
         stage('Docker Image Build'){

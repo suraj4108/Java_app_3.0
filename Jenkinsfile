@@ -76,7 +76,7 @@ pipeline{
         stage('Deploy to Artifactory') {
             steps {
                 script {
-                    def server = Artifactory.newServer url: 'ARTIFACTORY_URL', credentialsId: 'ARTIFACTORY_CREDENTIALS_ID'
+                    def server = Artifactory.newServer url: 'http://3.101.155.207:8082/artifactory/example-repo-local/', credentialsId: 'Jfrog'
                     server.upload spec: '{"files": [{"pattern": "kubernetes-configmap-reload-0.0.1-SNAPSHOT.jar", "target": "example-repo-local/"}]}'
                 }
             }
